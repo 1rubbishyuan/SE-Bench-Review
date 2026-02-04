@@ -1,0 +1,5 @@
+datasets>=2.14.0
+huggingface_hub
+pandas
+tqdm
+openai

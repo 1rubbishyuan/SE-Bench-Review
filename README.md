@@ -1,0 +1,143 @@
+<!-- # SE-Bench: Benchmarking Self-Evolution with Knowledge Internalization -->
+
+<p align="center">
+  <a href="https://github.com/thunlp/SE-Bench">
+    <img src="assets/sebench_logo_2.png" style="height: 10em; border-radius: 15px;" alt="se-bench" />
+  </a>
+</p>
+
+
+<p align="center">
+    <a href="https://www.python.org/">
+        <img alt="Build" src="https://img.shields.io/badge/Python-3.12+-1f425f.svg?color=purple">
+    </a>
+    <a href="https://copyright.princeton.edu/policy">
+        <img alt="License" src="https://img.shields.io/badge/License-MIT-blue">
+    </a>
+    <a href="https://huggingface.co/datasets/jintailin/SE-Bench">
+        <img src="https://img.shields.io/badge/%F0%9F%A4%97%20Datasets-SE--Bench-yellow">
+    </a>
+    <a href="https://github.com/thunlp/SE-Bench">
+        <img src="https://img.shields.io/badge/arXiv-Paper-b31b1b">
+    </a>
+</p>
+<h1>SE-Bench: Benchmarking Self-Evolution with Knowledge Internalization</h1>
+
+SE-Bench is a diagnostic environment designed to rigorously measure an agent's ability to **internalize** novel knowledge, which is a foundational capability for true self-evolution.
+
+## 📋 Benchmark Usage
+
+The benchmark is organized into training and testing phases:
+
+| Directory | Contents | Purpose |
+|-----------|----------|---------|
+| `datasets/train/api_doc.jsonl` | API documentation for the `zwc` package | Training material |
+| `datasets/train/train.jsonl` | Training questions | Training material |
+| `datasets/test/single_test.jsonl` | Single-function problems | Evaluation |
+| `datasets/test/multiple_test.jsonl` | Multi-function composition problems | Evaluation |
+
+**Protocol**: Train your model or agent using **only** the information provided in `datasets/train/`, then evaluate on problems in `datasets/test/` **without** access to documentation. This tests whether the model has truly internalized the API knowledge.
+
+## 🚀 Environment Setup
+First, create and activate a dedicated Conda environment, then install the required dependencies for the project.
+
+### Prerequisites
+- Conda (Anaconda/Miniconda) installed
+- Docker (required for evaluation sandbox)
+
+### Installation Steps
+```bash
+# Create a Conda environment named "se-bench" with Python 3.12
+conda create -n se-bench python==3.12 -y
+
+# Activate the Conda environment
+conda activate se-bench
+
+# Navigate to the SE-Bench project root directory
+cd SE-Bench
+
+# Install all required dependencies
+pip install -r requirements.txt
+```
+
+## ▶️ Model Rollout (Inference)
+Two inference modes are supported: with or without API documentation. You can use locally deployed models (via vLLM/SGLang) or OpenAI-compatible models (with API credentials).
+
+### Rollout Without API Documentation
+Run the `query_only.py` script to perform inference using only the query content:
+```bash
+cd src
+python query_only.py \
+ --num_workers 1 \
+ --input_path ../datasets/test/single_test.jsonl \
+ --output_path ../rollout_results/query_only.jsonl \
+ --model_name Qwen3-8B \
+ --host localhost \
+ --ports 8800 \
+ --sample_count 1 \
+ --temperature 0.6 \
+ --max_length 8192
+```
+
+### Rollout With API Documentation
+Run the `query_doc.py` script to perform inference with API documentation (requires specifying the document path):
+```bash
+cd src
+python query_doc.py \
+ --num_workers 1 \
+ --input_path ../datasets/test/single_test.jsonl \
+ --output_path ../rollout_results/query_doc.jsonl \
+ --doc_path ../datasets/train/api_doc.jsonl \
+ --model_name Qwen3-8B \
+ --host localhost \
+ --ports 8800 \
+ --sample_count 1 \
+ --temperature 0.6 \
+ --max_length 8192
+```
+
+### Key Parameter Explanation
+| Parameter       | Description                                                                 |
+|-----------------|-----------------------------------------------------------------------------|
+| `--num_workers` | Number of parallel worker processes (adjust based on hardware)              |
+| `--input_path`  | Path to input test dataset (JSONL format)                                   |
+| `--output_path` | Path to save rollout (inference) results                                    |
+| `--doc_path`    | Path to API documentation (required only for `query_doc.py`)                |
+| `--model_name`  | Name of the model to use (e.g., Qwen3-8B)                           |
+| `--host`        | Host address of locally deployed models                       |
+| `--ports`       | Port(s) of locally deployed models                            |
+| `--base_url`    | Base URL for OpenAI-compatible APIs            |
+| `--api_key`     | API key for OpenAI-compatible models           |
+| `--sample_count`| Number of samples to generate per input                                     |
+| `--temperature` | Sampling temperature (higher values = more random outputs)                  |
+| `--max_length`  | Maximum length of generated text by the model                               |
+
+## 🧪 Result Evaluation
+The evaluation phase requires building a Docker sandbox for safe code execution, followed by filtering correct inference trajectories.
+
+### Build Docker Sandbox
+The sandbox provides a secure environment for code execution and is deployed at `http://localhost:8111` by default:
+```bash
+# Build and start the Docker sandbox (Docker must be running)
+bash sandbox_build_and_run.sh
+```
+
+> **Note**: To change the sandbox port, modify the port configuration in `src/evaluation/worker.py`.
+
+### Run Evaluation
+After the sandbox is successfully started, execute the evaluation script to filter correct results:
+```bash
+cd src
+python filter_correct_trajectory.py \
+ --input_path ../rollout_results/query_only.jsonl \  # Replace with your actual rollout result path
+ --num_workers 64 \                                  # Number of parallel evaluation workers
+ --output_path ../evaluation_results/correct_trajectories.jsonl  # Optional: Path to save correct trajectories
+```
+
+## 📝 Notes
+- Adjust `--num_workers` based on your hardware resources (avoid overloading the system)
+- The sandbox must remain running during the entire evaluation process
+- All output paths will be created automatically if they do not exist
+
+## ✍️ Citation
+Updated soon.
