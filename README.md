@@ -25,25 +25,13 @@
 
 SE-Bench is a diagnostic environment designed to rigorously measure an agent's ability to **internalize** novel knowledge, which is a foundational capability for true self-evolution.
 
-## 📋 Benchmark Usage
-
-The benchmark is organized into training and testing phases:
-
-| Directory | Contents | Purpose |
-|-----------|----------|---------|
-| `datasets/train/api_doc.jsonl` | API documentation for the `zwc` package | Training material |
-| `datasets/train/train.jsonl` | Training questions | Training material |
-| `datasets/test/single_test.jsonl` | Single-function problems | Evaluation |
-| `datasets/test/multiple_test.jsonl` | Multi-function composition problems | Evaluation |
-
-**Protocol**: Train your model or agent using **only** the information provided in `datasets/train/`, then evaluate on problems in `datasets/test/` **without** access to documentation. This tests whether the model has truly internalized the API knowledge.
-
 ## 🚀 Environment Setup
 First, create and activate a dedicated Conda environment, then install the required dependencies for the project.
 
 ### Prerequisites
 - Conda (Anaconda/Miniconda) installed
 - Docker (required for evaluation sandbox)
+
 
 ### Installation Steps
 ```bash
@@ -60,8 +48,61 @@ cd SE-Bench
 pip install -r requirements.txt
 ```
 
+### Data Preparation
+You can load the dataset using the Hugging Face `datasets` library:
+
+```python
+from datasets import load_dataset
+
+dataset = load_dataset("jintailin/SE-Bench", "train")
+# Data is in dataset['train']
+print(dataset)
+dataset = load_dataset("jintailin/SE-Bench", "single_test")
+# Data is in dataset['train']
+print(dataset)
+dataset = load_dataset("jintailin/SE-Bench", "multiple_test")
+# Data is in dataset['train']
+print(dataset)
+```
+
+Alternatively, you can run the provided `load_datasets.py` script to download and save the data to the local directory structure:
+```bash
+python load_datasets.py
+```
+
+This will generate the following file structure:
+| Path | Description | Usage |
+| :--- | :--- | :--- |
+| `datasets/train/api_doc.jsonl` | API documentation for the `zwc` package | Training material |
+| `datasets/train/train.jsonl` | Training questions | Training material |
+| `datasets/test/single_test.jsonl` | Single-function problems | Evaluation |
+| `datasets/test/multiple_test.jsonl` | Multi-function composition problems | Evaluation |
+
+**Protocol**: Train your model or agent using **only** the information provided in `datasets/train/`, then evaluate on problems in `datasets/test/` **without** access to documentation. This tests whether the model has truly internalized the API knowledge.
+
+
 ## ▶️ Model Rollout (Inference)
-Two inference modes are supported: with or without API documentation. You can use locally deployed models (via vLLM/SGLang) or OpenAI-compatible models (with API credentials).
+
+### Model Deployment
+Before running the rollout scripts, you need to deploy the model (e.g., Qwen3-8B) locally. We support deployment via **vLLM** or **SGLang** at `localhost:8800`.
+
+**Option 1: Deploy with vLLM**
+```bash
+pip install vllm
+python -m vllm.entrypoints.openai.api_server \
+    --model Qwen/Qwen3-8B \
+    --port 8800 \
+    --host localhost
+```
+
+**Option 2: Deploy with SGLang**
+```bash
+pip install "sglang[all]"
+python -m sglang.launch_server \
+    --model-path Qwen/Qwen3-8B \
+    --port 8800 \
+    --host localhost
+```
 
 ### Rollout Without API Documentation
 Run the `query_only.py` script to perform inference using only the query content:
@@ -129,10 +170,23 @@ After the sandbox is successfully started, execute the evaluation script to filt
 ```bash
 cd src
 python filter_correct_trajectory.py \
- --input_path ../rollout_results/query_only.jsonl \  # Replace with your actual rollout result path
- --num_workers 64 \                                  # Number of parallel evaluation workers
+ --input_path ../rollout_results/query_only.jsonl \
+ --num_workers 64 \
  --output_path ../evaluation_results/correct_trajectories.jsonl  # Optional: Path to save correct trajectories
 ```
+
+### Evaluation on Custom Rollout Results
+If you are not using our generation scripts (`query_only.py` or `query_doc.py`) and wish to evaluate your own model outputs, you must format your rollout results as a JSONL file. Each line should be a dictionary containing the following keys:
+
+| Key | Description |
+| :--- | :--- |
+| `query` | The original question from the dataset. |
+| `response` | The model's generation, containing the execution code wrapped in ```python``` blocks and the reasoning process. |
+| `test_cases` | The original test cases from the dataset. Format: `[{"input":..., "output":...}, ...]`. |
+| `right_exe_result` | The original ground truth executable result string from the dataset. |
+
+Once your data is formatted correctly, you can directly run the evaluation script above.
+
 
 ## 📝 Notes
 - Adjust `--num_workers` based on your hardware resources (avoid overloading the system)
