@@ -17,7 +17,7 @@
     <a href="https://huggingface.co/datasets/jintailin/SE-Bench">
         <img src="https://img.shields.io/badge/%F0%9F%A4%97%20Datasets-SE--Bench-yellow">
     </a>
-    <a href="https://github.com/thunlp/SE-Bench">
+    <a href="https://arxiv.org/pdf/2602.04811">
         <img src="https://img.shields.io/badge/arXiv-Paper-b31b1b">
     </a>
 </p>
