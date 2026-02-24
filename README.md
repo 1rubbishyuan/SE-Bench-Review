@@ -137,27 +137,6 @@ python query_doc.py \
  --max_length 8192
 ```
 
-### Construct SFT Data
-First, run the `query_doc.py` to make rollouts.
-```bash
-cd src
-python query_doc.py \
- --num_workers 1 \
- --input_path ../datasets/test/train.jsonl \
- --output_path ../SFT_data/rollout_SFT_data.jsonl \
- --doc_path ../datasets/train/api_doc.jsonl \
- --model_name Qwen3-8B \
- --host localhost \
- --ports 8800 \
- --sample_count 5 \
- --temperature 0.6 \
- --max_length 8192
-```
-Then, run the `filter_correct_trajectory.py` to filter out corrcet trajectories.
-```bash
-python filter_correct_trajectory.py --input_path ../SFT_data/rollout_SFT_data.jsonl --output_path ../SFT_data/valid_SFT_data.jsonl --num_workers 64
-```
-
 ### Key Parameter Explanation
 | Parameter       | Description                                                                 |
 |-----------------|-----------------------------------------------------------------------------|
@@ -208,6 +187,27 @@ If you are not using our generation scripts (`query_only.py` or `query_doc.py`) 
 
 Once your data is formatted correctly, you can directly run the evaluation script above.
 
+
+## Construct SFT Data
+First, run the `query_doc.py` to make rollouts.
+```bash
+cd src
+python query_doc.py \
+ --num_workers 1 \
+ --input_path ../datasets/test/train.jsonl \
+ --output_path ../SFT_data/rollout_SFT_data.jsonl \
+ --doc_path ../datasets/train/api_doc.jsonl \
+ --model_name Qwen3-8B \
+ --host localhost \
+ --ports 8800 \
+ --sample_count 5 \
+ --temperature 0.6 \
+ --max_length 8192
+```
+Then, run the `filter_correct_trajectory.py` to filter out corrcet trajectories.
+```bash
+python filter_correct_trajectory.py --input_path ../SFT_data/rollout_SFT_data.jsonl --output_path ../SFT_data/valid_SFT_data.jsonl --num_workers 64
+```
 
 ## 📝 Notes
 - Adjust `--num_workers` based on your hardware resources (avoid overloading the system)
