@@ -224,13 +224,10 @@ You can check `LICENSE.md`
 If you find our work or dataset helpful for your research, please consider citing our paper:
 
 ```bibtex
-@misc{yuan2026sebench,
-    title={{SE-BENCH}: Benchmarking Self-Evolution with Knowledge Internalization},
-    author={Jiarui Yuan and Tailin Jin and Weize Chen and Zeyuan Liu and Zhiyuan Liu and Maosong Sun},
-    year={2026},
-    eprint={2602.04811},
-    archivePrefix={arXiv},
-    primaryClass={cs.CL},
-    url={https://arxiv.org/abs/2602.04811}
+@article{yuan2026se,
+  title={SE-Bench: Benchmarking Self-Evolution with Knowledge Internalization},
+  author={Yuan, Jiarui and Jin, Tailin and Chen, Weize and Liu, Zeyuan and Liu, Zhiyuan and Sun, Maosong},
+  journal={arXiv preprint arXiv:2602.04811},
+  year={2026}
 }
 ```
