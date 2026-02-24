@@ -17,7 +17,7 @@
     <a href="https://huggingface.co/datasets/jintailin/SE-Bench">
         <img src="https://img.shields.io/badge/%F0%9F%A4%97%20Datasets-SE--Bench-yellow">
     </a>
-    <a href="https://github.com/thunlp/SE-Bench">
+    <a href="https://arxiv.org/pdf/2602.04811">
         <img src="https://img.shields.io/badge/arXiv-Paper-b31b1b">
     </a>
 </p>
@@ -218,7 +218,6 @@ python filter_correct_trajectory.py --input_path ../SFT_data/rollout_SFT_data.js
 
 
 ## ✍️ Citation & License
-
 This project is licensed under the [MIT License](LICENSE).
 You can check `LICENSE.md` 
 
