@@ -137,6 +137,27 @@ python query_doc.py \
  --max_length 8192
 ```
 
+### Construct SFT Data
+First, run the `query_doc.py` to make rollouts.
+```bash
+cd src
+python query_doc.py \
+ --num_workers 1 \
+ --input_path ../datasets/test/train.jsonl \
+ --output_path ../SFT_data/rollout_SFT_data.jsonl \
+ --doc_path ../datasets/train/api_doc.jsonl \
+ --model_name Qwen3-8B \
+ --host localhost \
+ --ports 8800 \
+ --sample_count 5 \
+ --temperature 0.6 \
+ --max_length 8192
+```
+Then, run the `filter_correct_trajectory.py` to filter out corrcet trajectories.
+```bash
+python filter_correct_trajectory.py --input_path ../SFT_data/rollout_SFT_data.jsonl --output_path ../SFT_data/valid_SFT_data.jsonl --num_workers 64
+```
+
 ### Key Parameter Explanation
 | Parameter       | Description                                                                 |
 |-----------------|-----------------------------------------------------------------------------|
@@ -193,5 +214,20 @@ Once your data is formatted correctly, you can directly run the evaluation scrip
 - The sandbox must remain running during the entire evaluation process
 - All output paths will be created automatically if they do not exist
 
-## ✍️ Citation
-Updated soon.
+## ✍️ Citation & License
+
+This project is licensed under the [MIT License](LICENSE).
+You can check `LICENSE.md` 
+
+If you find our work or dataset helpful for your research, please consider citing our paper:
+
+```bibtex
+@misc{yuan2026sebench,
+    title={{SE-BENCH}: Benchmarking Self-Evolution with Knowledge Internalization},
+    author={Jiarui Yuan and Tailin Jin and Weize Chen and Zeyuan Liu and Zhiyuan Liu and Maosong Sun},
+    year={2026},
+    eprint={2602.04811},
+    archivePrefix={arXiv},
+    primaryClass={cs.CL},
+    url={https://arxiv.org/abs/2602.04811}
+}
