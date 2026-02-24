@@ -190,6 +190,7 @@ Once your data is formatted correctly, you can directly run the evaluation scrip
 
 ## Construct SFT Data
 First, run the `query_doc.py` to make rollouts.
+Remember to deploy model via **vLLM** or **SGLang** before rollout.
 ```bash
 cd src
 python query_doc.py \
@@ -205,6 +206,7 @@ python query_doc.py \
  --max_length 8192
 ```
 Then, run the `filter_correct_trajectory.py` to filter out corrcet trajectories.
+Remember to Build sandbox before filtering.
 ```bash
 python filter_correct_trajectory.py --input_path ../SFT_data/rollout_SFT_data.jsonl --output_path ../SFT_data/valid_SFT_data.jsonl --num_workers 64
 ```
