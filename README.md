@@ -199,6 +199,7 @@ For detailed instructions on configuring the `verl` training environment, please
 ### SFT
 
 1. **Construct SFT Data**
+
 First, run the `query_doc.py` to make rollouts.
 Remember to deploy model via **vLLM** or **SGLang** before rollout.
 ```bash
@@ -227,19 +228,23 @@ python evolve_folder/scripts/convert_jsonl_to_parquet.py --local_dir ../SFT_data
 ```
 
 2. **Run Open-SFT**
+
 ```bash
 cd verl_evolve
 bash evolve_folder/training_commands/Qwen3-8B/provided-Open-SFT.sh
 ```
 
 3. **Run Closed-SFT**
+
 ```bash
 cd verl_evolve
 bash evolve_folder/training_commands/Qwen3-8B/provided-Closed-SFT.sh
 ```
 
 ### RL
+
 1. **Construct RL Data**
+
 ```bash
 cd verl_evolve
 python evolve_folder/scripts/rl_train.py --input_path ../datasets/train/train.jsonl --output_path ../RL_data
@@ -247,16 +252,19 @@ python evolve_folder/scripts/rl_real_train.py --input_path ../datasets/train/tra
 python evolve_folder/scripts/rl_test.py --input_path ../datasets/train/test.jsonl --output_path ../RL_data
 ```
 2. **Run Open-RL**
+
 ```bash
 cd verl_evolve
 bash evolve_folder/training_commands/Qwen3-8B/provided-Open-RL.sh
 ```
 3. **Run Closed-RL**
+
 ```bash
 cd verl_evolve
 bash evolve_folder/training_commands/Qwen3-8B/provided-CLosed-RL.sh
 ```
 4. **Run SFT-RL**
+
 Before proceeding, merge the SFT checkpoints using `verl/model_merger`. Next, update the `actor_rollout_ref.model.path` in your RL scripts to point to the merged model. The remaining training steps are identical to those described above.
 
 ## 📝 Notes
