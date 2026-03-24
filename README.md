@@ -206,7 +206,7 @@ Remember to deploy model via **vLLM** or **SGLang** before rollout.
 cd src
 python query_doc.py \
  --num_workers 1 \
- --input_path ../datasets/test/train.jsonl \
+ --input_path ../datasets/train/train.jsonl \
  --output_path ../SFT_data/rollout_SFT_data.jsonl \
  --doc_path ../datasets/train/api_doc.jsonl \
  --model_name Qwen3-8B \
@@ -249,7 +249,7 @@ bash evolve_folder/training_commands/Qwen3-8B/provided-Closed-SFT.sh
 cd verl_evolve
 python evolve_folder/scripts/rl_train.py --input_path ../datasets/train/train.jsonl --output_path ../RL_data
 python evolve_folder/scripts/rl_real_train.py --input_path ../datasets/train/train.jsonl --output_path ../RL_data
-python evolve_folder/scripts/rl_test.py --input_path ../datasets/train/test.jsonl --output_path ../RL_data
+python evolve_folder/scripts/rl_test.py --input_path ../datasets/test/test.jsonl --output_path ../RL_data
 ```
 2. **Run Open-RL**
 
