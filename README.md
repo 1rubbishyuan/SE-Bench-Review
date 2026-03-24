@@ -249,7 +249,7 @@ bash evolve_folder/training_commands/Qwen3-8B/provided-Closed-SFT.sh
 cd verl_evolve
 python evolve_folder/scripts/rl_train.py --input_path ../datasets/train/train.jsonl --output_path ../RL_data
 python evolve_folder/scripts/rl_real_train.py --input_path ../datasets/train/train.jsonl --output_path ../RL_data
-python evolve_folder/scripts/rl_test.py --input_path ../datasets/test/test.jsonl --output_path ../RL_data
+python evolve_folder/scripts/rl_test.py --input_path ../datasets/test/single_test.jsonl --output_path ../RL_data
 ```
 2. **Run Open-RL**
 
