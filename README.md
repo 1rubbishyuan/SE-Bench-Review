@@ -1,26 +1,3 @@
-<!-- # SE-Bench: Benchmarking Self-Evolution with Knowledge Internalization -->
-
-<p align="center">
-  <a href="https://github.com/thunlp/SE-Bench">
-    <img src="assets/sebench_logo_2.png" style="height: 10em; border-radius: 15px;" alt="se-bench" />
-  </a>
-</p>
-
-
-<p align="center">
-    <a href="https://www.python.org/">
-        <img alt="Build" src="https://img.shields.io/badge/Python-3.12+-1f425f.svg?color=purple">
-    </a>
-    <a href="https://copyright.princeton.edu/policy">
-        <img alt="License" src="https://img.shields.io/badge/License-MIT-blue">
-    </a>
-    <a href="https://huggingface.co/datasets/jintailin/SE-Bench">
-        <img src="https://img.shields.io/badge/%F0%9F%A4%97%20Datasets-SE--Bench-yellow">
-    </a>
-    <a href="https://arxiv.org/pdf/2602.04811">
-        <img src="https://img.shields.io/badge/arXiv-Paper-b31b1b">
-    </a>
-</p>
 <h1>SE-Bench: Benchmarking Self-Evolution with Knowledge Internalization</h1>
 
 SE-Bench is a diagnostic environment designed to rigorously measure an agent's ability to **internalize** novel knowledge, which is a foundational capability for true self-evolution.
@@ -54,13 +31,13 @@ You can load the dataset using the Hugging Face `datasets` library:
 ```python
 from datasets import load_dataset
 
-dataset = load_dataset("jintailin/SE-Bench", "train")
+dataset = load_dataset("unknown12423124/SE-Bench", "train")
 # Data is in dataset['train']
 print(dataset)
-dataset = load_dataset("jintailin/SE-Bench", "single_test")
+dataset = load_dataset("unknown12423124/SE-Bench", "single_test")
 # Data is in dataset['train']
 print(dataset)
-dataset = load_dataset("jintailin/SE-Bench", "multiple_test")
+dataset = load_dataset("unknown12423124/SE-Bench", "multiple_test")
 # Data is in dataset['train']
 print(dataset)
 ```
@@ -271,19 +248,3 @@ Before proceeding, merge the SFT checkpoints using `verl/model_merger`. Next, up
 - Adjust `--num_workers` based on your hardware resources (avoid overloading the system)
 - The sandbox must remain running during the entire evaluation process
 - All output paths will be created automatically if they do not exist
-
-
-## ✍️ Citation & License
-This project is licensed under the [MIT License](LICENSE).
-You can check `LICENSE.md` 
-
-If you find our work or dataset helpful for your research, please consider citing our paper:
-
-```bibtex
-@article{yuan2026se,
-  title={SE-Bench: Benchmarking Self-Evolution with Knowledge Internalization},
-  author={Yuan, Jiarui and Jin, Tailin and Chen, Weize and Liu, Zeyuan and Liu, Zhiyuan and Sun, Maosong},
-  journal={arXiv preprint arXiv:2602.04811},
-  year={2026}
-}
-```

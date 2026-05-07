@@ -1,1 +1,35 @@
-__pycache__/*
+# Python
+__pycache__/
+**/__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+.pytest_cache/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editors
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Env / secrets
+.env
+.env.*
+*.pem
+*.key
+
+# Local outputs (project-specific)
+rollout_results/
+evaluation_results/
+SFT_data/
+RL_data/
+checkpoints/
+wandb/

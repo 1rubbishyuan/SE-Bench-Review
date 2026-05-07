@@ -1,3 +1,4 @@
+import os
 from openai import OpenAI
 from argparse import ArgumentParser
 import json
@@ -7,8 +8,8 @@ import logging
 import re
 
 client = OpenAI(
-    api_key='sk-enMAawBgdsdPI2kgF9Cf09872aDb410cB9F2BcDaC96fDaE5',
-    base_url='https://yeysai.com/v1'
+    api_key=os.environ.get("OPENAI_API_KEY", ""),
+    base_url=os.environ.get("OPENAI_BASE_URL", "https://api.openai.com/v1"),
 )
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
